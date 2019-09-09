@@ -1,4 +1,3 @@
-video-help: https://www.youtube.com/watch?v=ciYsDbBx80s
 https://hub.docker.com/u/juniordocker/content/sub-56bdd3ba-b09b-4028-8f90-efc431e1d425
 Oracle Database Server Docker Image Steps
 
