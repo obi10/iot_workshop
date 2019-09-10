@@ -36,15 +36,7 @@ i
 change
 :wq
 
-
-
-
-
-
-
-
-Connecting from within the container
-# docker run -d -it --name <oracle-db> store/oracle/database-enterprise:12.2.0.1
+create oracle user
 # docker exec -it oracle-db bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
 
 SQL> connect sys as sysdba;

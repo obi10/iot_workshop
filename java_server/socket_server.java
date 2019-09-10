@@ -6,6 +6,8 @@ import java.lang.ClassNotFoundException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.sql.*;
+
 /**
  * This class implements java Socket server
  * @author junicode
@@ -15,37 +17,58 @@ import java.net.Socket;
 
 public class socket_server {
     
-    //static ServerSocket variable
-    private static ServerSocket server;
-    private static int port = 9876; //puerto donde se escuchara al cliente (ESP8266)
+    private static Connection conn;
+    private static ServerSocket listenfd;
     
-    public static void main(String args[]) throws IOException, ClassNotFoundException{
+    public static void main(String args[]) throws IOException, ClassNotFoundException {
+        //connect to the database
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        try { conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:32769/ORCLCDB.localdomain","oracle","oracle"); } catch (Exception e) { System.err.println(e.getMessage()); }
+        System.out.println("Conexion exitosa a la base de datos");
         //create the socket server object
-        server = new ServerSocket(port);
+        listenfd = new ServerSocket(9876); //se especifica el puerto
+
+
         //keep listens indefinitely until receives 'exit' call or program terminates
         while(true){
-            System.out.println("Waiting for the client request");
-            //creating socket and waiting for client connection
-            Socket socket = server.accept();
-            //read from socket to ObjectInputStream object
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            //convert ObjectInputStream object to String
-            String message = (String) ois.readObject(); //importante: so obtiene la informacion del micro
-            System.out.println("Mensaje recibido " + message); //con esta linea de codigo nos daremos cuenta si el mensaje llego
-            //create ObjectOutputStream object
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); //objeto necesario para enviar informacion al cliente
-            //write object to Socket
-            oos.writeObject("Hi Client "+message);
+            System.out.println("Esperando la conexion del cliente ...");
+            Socket socket = listenfd.accept(); //creating socket and waiting for client connection (listen and accept)
+            
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream()); //read from socket to ObjectInputStream object
+            String message = (String) ois.readObject(); //convert ObjectInputStream object to String
+            System.out.println("Mensaje recibido " + message);
+
+            //logica de separacion del string recibido
+
+            try {
+            //se inserta la data recibida en la base de datos
+            Statement st = conn.createStatement();
+
+
+            //close database resources
+            st.close();
+
+            } catch (Exception e) { 
+                System.err.println("Got an exception! "); 
+                System.err.println(e.getMessage());
+            }
+            
+
+
             //close resources
             ois.close();
-            oos.close();
-            socket.close();
-            //terminate the server if client sends exit request
+            socket.close(); System.out.println("conexion cerrada");
+
+            //terminate the listenfd if client sends exit request
             if(message.equalsIgnoreCase("exit")) break;
         }
-        System.out.println("Apagando el servidor!!");
-        //close the ServerSocket object
-        server.close();
+        
+        try { conn.close(); } catch (Exception e) { System.err.println(e.getMessage()); }
+        listenfd.close(); //close the ServerSocket object
+
+        System.out.println("server terminated!!");
+
+        
     }
     
 }

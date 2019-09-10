@@ -17,23 +17,26 @@ public class socket_client {
         InetAddress host = InetAddress.getLocalHost();
         Socket socket = null;
         ObjectOutputStream oos = null;
-        ObjectInputStream ois = null;
-        for(int i=0; i<5;i++){
+
+        for(int i=1; i<12; i++){
             //establish socket connection to server
             socket = new Socket(host.getHostName(), 9876); //se usa el puerto 9876
             //write to socket using ObjectOutputStream
             oos = new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("Sending request to Socket Server");
-            if(i==4)oos.writeObject("exit");
-            else oos.writeObject(""+i); //esta convirtiendo en int a string
-            //read the server response message
-            ois = new ObjectInputStream(socket.getInputStream()); //objeto necesario para recibir informacion
-            String message = (String) ois.readObject();
-            System.out.println("Message: " + message);
-            //close resources
-            ois.close(); //importante, siempre se debe cerrar las conexiones
-            oos.close();
-            Thread.sleep(100);
+
+            if(i==11) {
+                oos.writeObject("exit");
+                System.out.println("Mensaje enviado");
+                oos.close();
+            }
+            else {
+                oos.writeObject("A" + i + "$15$21$2019-09-09 17:48:46.503000000");
+                System.out.println("Mensaje enviado");
+            
+                //close resources
+                oos.close();
+                Thread.sleep(7000);
+            }
         }
     }
 }
