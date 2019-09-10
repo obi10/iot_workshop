@@ -38,12 +38,12 @@ public class socket_server {
             String message = (String) ois.readObject(); //convert ObjectInputStream object to String
             System.out.println("Mensaje recibido " + message);
 
-            //logica de separacion del string recibido
+            //logica de separacion del string recibido (A1$15$21$2019-09-09 17:48:46.503000000)
 
             try {
             //se inserta la data recibida en la base de datos
             Statement st = conn.createStatement();
-
+            st.executeUpdate("INSERT INTO AGRO VALUES ('A1', '15', '21', TO_TIMESTAMP('2019-09-09 17:48:46.503000000', 'YYYY-MM-DD HH24:MI:SS.FF'))");
 
             //close database resources
             st.close();
