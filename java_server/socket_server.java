@@ -8,6 +8,8 @@ import java.net.Socket;
 
 import java.sql.*;
 
+import java.util.Arrays;
+
 /**
  * This class implements java Socket server
  * @author junicode
@@ -28,22 +30,40 @@ public class socket_server {
         //create the socket server object
         listenfd = new ServerSocket(9876); //se especifica el puerto
 
+        Socket socket = null;
+        ObjectInputStream ois = null;
+
+        String message = "";
+        String [] datos = new String[7]; //7 elementos
+
 
         //keep listens indefinitely until receives 'exit' call or program terminates
         while(true){
             System.out.println("Esperando la conexion del cliente ...");
-            Socket socket = listenfd.accept(); //creating socket and waiting for client connection (listen and accept)
+            socket = listenfd.accept(); //creating socket and waiting for client connection (listen and accept)
             
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream()); //read from socket to ObjectInputStream object
-            String message = (String) ois.readObject(); //convert ObjectInputStream object to String
+            ois = new ObjectInputStream(socket.getInputStream()); //read from socket to ObjectInputStream object
+            message = (String) ois.readObject(); //convert ObjectInputStream object to String
             System.out.println("Mensaje recibido " + message);
 
-            //logica de separacion del string recibido (A1$15$21$2019-09-09 17:48:46.503000000)
+            //terminate the listenfd if client sends exit request
+            if(message.equalsIgnoreCase("exit")) {
+                ois.close();
+                socket.close(); System.out.println("conexion cerrada");
+                break;
+            }
+
+            //logica de separacion del string recibido (ID1$44$22$A1$100$Jorge Torres$2019-09-13T18:47:41.268)
+            datos = message.split("\\$");
+            String time_timestamp_format = datos[6].replace('T', ' ');
+
+            System.out.println(datos[0] +  " " + datos[1] + " " + datos[2] + " " + datos[3] + " " + datos[4] + " " + datos[5] + " " + time_timestamp_format);
 
             try {
             //se inserta la data recibida en la base de datos
             Statement st = conn.createStatement();
-            st.executeUpdate("INSERT INTO AGRO VALUES ('A1', '15', '21', TO_TIMESTAMP('2019-09-09 17:48:46.503000000', 'YYYY-MM-DD HH24:MI:SS.FF'))");
+            st.executeUpdate("INSERT INTO AGRO VALUES ('" + datos[0] + "', '" + datos[1] + "', '" + datos[2] + "', '" + datos[3] + "', '" + datos[4] + 
+                            "', '" + datos[5] + "', TO_TIMESTAMP('" + time_timestamp_format + "', 'YYYY-MM-DD HH24:MI:SS.FF'))");
 
             //close database resources
             st.close();
@@ -52,15 +72,11 @@ public class socket_server {
                 System.err.println("Got an exception! "); 
                 System.err.println(e.getMessage());
             }
-            
 
 
             //close resources
             ois.close();
             socket.close(); System.out.println("conexion cerrada");
-
-            //terminate the listenfd if client sends exit request
-            if(message.equalsIgnoreCase("exit")) break;
         }
         
         try { conn.close(); } catch (Exception e) { System.err.println(e.getMessage()); }
