@@ -1,0 +1,15 @@
+start the container - db
+# docker start oracle-db
+# docker ps
+
+access to the container terminal
+# docker exec -it oracle-db bash
+
+access to the container terminal (root access)
+# docker exec -u root --workdir / -ti oracle-db /bin/sh
+
+
+copy files from host to docker container
+# docker cp ./jdk-8u211-linux-x64.rpm oracle-db:/home/oracle/
+
+

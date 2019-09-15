@@ -50,6 +50,13 @@ SQL> GRANT ALL PRIVILEGES TO oracle;
 
 
 
+root access - container
+# docker exec -u root --workdir / -ti oracle-db /bin/sh
+change oracle user password (password: oracle)
+# passwd oracle
+
+
+
 
 
 
