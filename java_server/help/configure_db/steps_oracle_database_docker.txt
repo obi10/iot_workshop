@@ -15,7 +15,7 @@ connecting from outside the container ---
 1521/tcp -> 0.0.0.0:32769
 5500/tcp -> 0.0.0.0:32768
 <mapped>: 32769
-# docker inspect docker-db
+# docker inspect oracle-db
 <ip-address>: 172.17.0.2
 # docker exec -it oracle-db bash
 [oracle@d91b891e1f9c ORCLCDB]$ printenv

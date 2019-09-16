@@ -17,5 +17,23 @@ https://www.mirantis.com/blog/how-do-i-create-a-new-docker-image-for-my-applicat
 upload to Docker Hub (problem: container's size - 8GB)
 # docker push juniordocker/oracledb:v1
 
+https://stackoverflow.com/questions/23935141/how-to-copy-docker-images-from-one-host-to-another-without-using-a-repository
 compress the new image
 # docker save juniordocker/oracledb > oracledb.tar
+
+transfer files from the localhost to a remote host
+$ scp -i ulima_key /home/junicode/Documents/oracle/otros/oracledb.tar ubuntu@129.213.122.211:/home/ubuntu
+
+Load the image into Docker
+# docker load -i /home/ubuntu/oracledb.tar
+
+---------------------------------------------------------------------------------------------------
+IMPORTANTE
+Se tuvo problemas al crear la nueva imagen
+Cuando se corrio un contenedor, este no tenia seteado la variable JAVA_HOME y modificado el PATH
+Los puertos tampoco estaban expuestos
+
+Se recomienda crear el contenedor de base de datos desde cero en la nube!!!
+---------------------------------------------------------------------------------------------------
+
+
