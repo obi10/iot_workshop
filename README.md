@@ -19,10 +19,10 @@ This project was made to demonstrate how easy is to collect data (humidity and t
 ### Setup - Running the test
 
 __Arquitecture of the solution__
-[arquitecture Screen Shot][arqui-screenshot]
+[![arquitecture Screen Shot][arqui-screenshot]]
 
 __Raspberry Pi - sensors__
-[raspberry Screen Shot][raspi-img]
+[![raspberry Screen Shot][raspi-img]]
 
 __Raspberry Pi__
 1. Clone the repository `git clone https://github.com/obi10/iot_workshop.git`
@@ -32,7 +32,7 @@ __Raspberry Pi__
 __Computer__
 1. Sign in to [OCI account](https://cloud.oracle.com)
 2. Create a compute instance and enter the terminal (use putty with the respective private key)
-3. Download the compressed Docker image 'oracledb.tar' `wget ... oradocs-corp`
+3. Get the compressed Docker image 'oracledb.tar' (USB)
 4. Install Docker `apt install docker.io`
 5. Load the Docker image from the tar file `docker load < oracledb.tar`
 6. Go to 'Analytics Cloud Service' in order to visualize the data derived from the raspberry.
