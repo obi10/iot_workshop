@@ -1,3 +1,4 @@
+(Host)
 start the container - db
 # docker start oracle-db
 # docker ps
@@ -11,5 +12,17 @@ access to the container terminal (root access)
 
 copy files from host to docker container
 # docker cp ./jdk-8u211-linux-x64.rpm oracle-db:/home/oracle/
+
+
+
+
+
+java_server
+$ javac -cp ojdbc8.jar: socket_server.java
+$ java -cp ojdbc8.jar: socket_server
+
+raspberry_client
+$ javac socket_client.java
+$ java socket_client
 
 

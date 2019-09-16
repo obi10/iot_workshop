@@ -1,7 +1,0 @@
-java_server
-junicode@junicode-XPS-13-9370:~/Documents/oracle/tech/workshops/iot$ javac -cp ojdbc8.jar: socket_server.java
-junicode@junicode-XPS-13-9370:~/Documents/oracle/tech/workshops/iot$ java -cp ojdbc8.jar: socket_server
-
-raspberry_client
-junicode@junicode-XPS-13-9370:~/Documents/oracle/tech/workshops/iot/raspberry_client$ javac socket_client.java
-junicode@junicode-XPS-13-9370:~/Documents/oracle/tech/workshops/iot/raspberry_client$ java socket_client

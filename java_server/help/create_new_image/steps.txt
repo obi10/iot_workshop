@@ -1,0 +1,21 @@
+root access - container
+# docker exec -u root --workdir / -ti oracle-db /bin/sh
+
+do all the changes... (container)
+sh-4.2# yum install sudo
+sh-4.2# passwd oracle
+sh-4.2# su - oracle
+[oracle@d91b891e1f9c ~]$ sudo yum install net-tools
+
+install java jdk, jre (https://docs.datastax.com/en/install/6.0/install/installJdkRHEL.html)
+
+create a new image
+https://www.mirantis.com/blog/how-do-i-create-a-new-docker-image-for-my-application/
+# docker commit -m "java socket program added" -a "Junior Palomino" oracle-db juniordocker/oracledb:v1
+# docker images
+
+upload to Docker Hub (problem: container's size - 8GB)
+# docker push juniordocker/oracledb:v1
+
+compress the new image
+# docker save juniordocker/oracledb > oracledb.tar
