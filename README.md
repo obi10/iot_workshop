@@ -19,10 +19,10 @@ This project was made to demonstrate how easy is to collect data (humidity and t
 ### Setup - Running the test
 
 __Arquitecture of the solution__
-![arquitecture Screen Shot](http://images/arquitectura_solucion.png)
+![arquitecture Screen Shot](https://github.com/obi10/iot_workshop/blob/master/images/arquitectura_solucion.png)
 
 __Raspberry Pi - sensors__
-![raspberry Screen Shot](http://images/raspi.png)
+![raspberry Screen Shot](https://github.com/obi10/iot_workshop/blob/master/images/raspi.png)
 
 __Raspberry Pi__
 1. Clone the repository `git clone https://github.com/obi10/iot_workshop.git`
