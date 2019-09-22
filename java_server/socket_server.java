@@ -25,7 +25,7 @@ public class socket_server {
     public static void main(String args[]) throws IOException, ClassNotFoundException {
         //connect to the database
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        try { conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:32769/ORCLCDB.localdomain","oracle","oracle"); } catch (Exception e) { System.err.println(e.getMessage()); }
+        try { conn = DriverManager.getConnection("jdbc:oracle:thin:@//0.0.0.0:32769/ORCLCDB.localdomain","oracle","oracle"); } catch (Exception e) { System.err.println(e.getMessage()); }
         System.out.println("Conexion exitosa a la base de datos");
         //create the socket server object
         listenfd = new ServerSocket(9876); //se especifica el puerto
