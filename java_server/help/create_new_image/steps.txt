@@ -33,7 +33,19 @@ Se tuvo problemas al crear la nueva imagen
 Cuando se corrio un contenedor, este no tenia seteado la variable JAVA_HOME y modificado el PATH
 Los puertos tampoco estaban expuestos
 
+No se deberia instalar java en el contenedor
+
 Se recomienda crear el contenedor de base de datos desde cero en la nube!!!
+Y ejecutar el programa java en la maquina virtual que aloja el contenedor, no dentro del contenedor
 ---------------------------------------------------------------------------------------------------
+
+
+install java in ubuntu
+
+$ cd /usr/java/
+$ sudo mv ~/jdk-8u211-linux-x64.tar.gz .
+$ sudo tar zxvf jdk-8u211-linux-x64.tar.gz
+$ export JAVA_HOME=/usr/java/jdk1.8.0_211/
+$ export PATH=$JAVA_HOME/bin:$PATH
 
 

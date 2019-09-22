@@ -19,24 +19,16 @@ This project was made to demonstrate how easy is to collect data (humidity and t
 ### Setup - Running the test
 
 __Arquitecture of the solution__
-[![arquitecture Screen Shot][arqui-screenshot]]
+![arquitecture Screen Shot](http://images/arquitectura_solucion.png)
 
 __Raspberry Pi - sensors__
-[![raspberry Screen Shot][raspi-img]]
+![raspberry Screen Shot](http://images/raspi.png)
 
 __Raspberry Pi__
 1. Clone the repository `git clone https://github.com/obi10/iot_workshop.git`
 2. Install java JDK, JRE (jdk-8u211-linux-x64.tar.gz)
-3. Run the java program 'socket_client.java' specifying the number of connections `java socket_client <number_conn>`
+3. Go to raspi_cliente folder and run the java program 'socket_client.java' specifying the number of connections `java socket_client <number_conn>`
 
 __Computer__
 1. Sign in to [OCI account](https://cloud.oracle.com)
-2. Create a compute instance and enter the terminal (use putty with the respective private key)
-3. Get the compressed Docker image 'oracledb.tar' (USB)
-4. Install Docker `apt install docker.io`
-5. Load the Docker image from the tar file `docker load < oracledb.tar`
-6. Go to 'Analytics Cloud Service' in order to visualize the data derived from the raspberry.
-
-
-
-[raspi-img]: images/raspi.png
+2. Enter to Oracle Data Visualization Cloud Service

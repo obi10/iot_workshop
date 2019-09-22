@@ -5,32 +5,39 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import java.util.Random;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
+
+import com.pi4j.io.gpio.*;
 
 /**
  * This class implements java socket client
  * @author junicode
  *
  */
-public class socket_client {
+
+// caso de uso: escalera electrica
+
+public class socket_client2 {
 
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException, InterruptedException{
         //get the localhost IP address, if server is running on some other IP, you need to use that
-        InetAddress host = InetAddress.getByName("127.0.0.1");
+        InetAddress host = InetAddress.getByName("52.117.221.6");
         Socket socket = null;
         ObjectOutputStream oos = null;
 
-        int humedad = 0;
-        int temperatura = 0;
-        String area = "A1";
-        int altura = 100;
+        GpioPinDigitalOutput sensorTriggerPin;
+        GpioPinDigitalInput sensorEchoPin;
+        GpioController gpio = GpioFactory.getInstance();
+
+        int presencia = 0; //varia
+        int piso = 2;
+        int x = 34;
+        int y = 45;
 
         String[] supervisores = {"Juan Perez", "Jose Diaz", "Luis Quispe", "Jorge Torres"}; //los supervisores estaran a cargo para rangos horarios especificos
         String current_supervisor = "";
 
-        Random rand = new Random();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
 
         if (args.length == 0) {
@@ -38,20 +45,47 @@ public class socket_client {
             System.exit(0);
         }
 
+        sensorTriggerPin =  gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00); // Trigger pin as OUTPUT
+        sensorEchoPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02,PinPullResistance.PULL_DOWN); // Echo pin as INPUT
+
         for(int i = 1; i < Integer.parseInt(args[0]) + 2; i++){ //se insertan args[0] elementos en la base de datos
             //establish socket connection to server
             socket = new Socket(host.getHostName(), 9876); //se usa el puerto 9876
             //write to socket using ObjectOutputStream
             oos = new ObjectOutputStream(socket.getOutputStream());
 
-            if(i == Integer.parseInt(args[0]) + 1) {
+            if (i == Integer.parseInt(args[0]) + 1) {
                 oos.writeObject("exit");
                 System.out.println("Exit enviado");
                 oos.close();
             }
             else {
-                humedad = rand.nextInt(5) + 40; // [40-44 %] la humedad no varia drasticamente en segundos
-                temperatura = rand.nextInt(5) + 20; // [20-24 celsius] la temperatura ""
+                double valor = 0;
+        
+                //logica para determinar presencia (RPi.GPIO)
+                try {
+                    Thread.sleep(2000);
+                    sensorTriggerPin.high(); // Make trigger pin HIGH
+                    Thread.sleep((long) 0.01);// Delay for 10 microseconds
+                    sensorTriggerPin.low(); //Make trigger pin LOW
+                
+                    while(sensorEchoPin.isLow()){ //Wait until the ECHO pin gets HIGH
+                        
+                    }
+                    long startTime= System.nanoTime(); // Store the surrent time to calculate ECHO pin HIGH time.
+                    while(sensorEchoPin.isHigh()){ //Wait until the ECHO pin gets LOW
+                        
+                    }
+                    long endTime= System.nanoTime(); // Store the echo pin HIGH end time to calculate ECHO pin HIGH time.
+                
+                    System.out.println("Distance :"+((((endTime-startTime)/1e3)/2) / 29.1) +" cm"); //Printing out the distance in cm 
+                    valor = (((endTime-startTime)/1e3)/2) / 29.1;
+                    Thread.sleep(1000);
+                    
+                } catch (InterruptedException e) { e.printStackTrace(); }
+                
+                if (valor < 10) presencia = 1;
+                else presencia = 0;
 
                 LocalDateTime current_time = LocalDateTime.now();
                 if (current_time.getHour() >= 0 && current_time.getHour() <= 5) current_supervisor = supervisores[0];
@@ -60,7 +94,7 @@ public class socket_client {
                 if (current_time.getHour() >= 18 && current_time.getHour() <= 23) current_supervisor = supervisores[3];
                 
 
-                oos.writeObject("ID" + i + "$" + humedad + "$" + temperatura + "$" + area + "$" + altura + "$" + current_supervisor + "$" + current_time);
+                oos.writeObject("ID" + i + "$" + presencia + "$" + piso + "$" + x + "$" + y + "$" + current_supervisor + "$" + current_time);
                 System.out.println("Mensaje enviado");
             
                 //close resources
